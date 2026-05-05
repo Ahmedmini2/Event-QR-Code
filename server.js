@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
+import sessionFileStoreFactory from 'session-file-store';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import authRoutes from './routes/auth.js';
@@ -18,7 +19,18 @@ app.use(express.json({ limit: '512kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const FileStore = sessionFileStoreFactory(session);
+const sessionDir = path.join(__dirname, 'data', 'sessions');
+const sessionStore = new FileStore({
+  path: sessionDir,
+  ttl: 8 * 60 * 60,
+  retries: 2,
+  reapInterval: 60 * 60,
+  logFn: () => {},
+});
+
 app.use(session({
+  store: sessionStore,
   secret: process.env.SESSION_SECRET || 'dev-only-not-secure',
   resave: false,
   saveUninitialized: false,
