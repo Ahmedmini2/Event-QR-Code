@@ -1,0 +1,21 @@
+<header class="topbar">
+  <a href="/app" class="wordmark">
+    Allegiance <span class="mark-line"></span> <span class="accent">Concierge</span>
+  </a>
+  <nav>
+    <a href="/app" class="<%= path === '/app' ? 'active' : '' %>">Overview</a>
+    <a href="/app/invite" class="<%= path === '/app/invite' ? 'active' : '' %>">Create Invitation</a>
+    <a href="/app/invitations" class="<%= path === '/app/invitations' ? 'active' : '' %>">Invitations Send</a>
+    <a href="/app/scan" class="<%= path === '/app/scan' ? 'active' : '' %>">Front desk</a>
+    <a href="/app/walkin" class="<%= path === '/app/walkin' ? 'active' : '' %>">Walk-in</a>
+    <% if (user && user.isAdmin) { %>
+      <a href="/app/events" class="<%= path === '/app/events' ? 'active' : '' %>">Events</a>
+    <% } %>
+  </nav>
+  <div class="agent-tag">
+    <span>Agent</span><span class="name"><%= user && user.name ? user.name : '' %></span>
+    <form action="/auth/logout" method="post">
+      <button class="btn secondary" type="submit" style="padding:.45rem .8rem;font-size:.7rem;">Sign out</button>
+    </form>
+  </div>
+</header>

@@ -1,0 +1,48 @@
+<%- include('partials/head', { pageTitle: 'Events' }) %>
+<body>
+  <div class="page">
+    <%- include('partials/topbar') %>
+    <main class="shell" style="max-width: 920px;">
+      <header>
+        <span class="t-eyebrow">Events</span>
+        <hr class="rule gold" />
+        <h1 class="t-headline">Approved event names</h1>
+        <p class="t-body" style="max-width: 60ch;">
+          Maintain the list of events agents may attach an invitation to. Only names that appear here are
+          selectable from the Create Invitation and Walk-in screens. Available to System Administrator profiles only.
+        </p>
+      </header>
+
+      <section class="card">
+        <span class="t-eyebrow">Add a new event</span>
+        <hr class="rule gold" />
+        <form id="add-event-form" style="display:flex; gap:.8rem; align-items:flex-end; flex-wrap:wrap;">
+          <div class="field" style="flex:1; min-width: 260px; margin:0;">
+            <label for="new-event-name">Event name</label>
+            <input type="text" id="new-event-name" placeholder="e.g. Marina Heights — Private Preview" maxlength="120" required />
+          </div>
+          <button class="btn" type="submit">Add event</button>
+        </form>
+      </section>
+
+      <section style="margin-top: 2rem;">
+        <span class="t-eyebrow">All events</span>
+        <hr class="rule gold" />
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="ledger" id="events-table">
+            <thead>
+              <tr>
+                <th>Event name</th><th>Created</th><th>Status</th><th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="empty" id="empty" hidden>No events yet. Add the first one above.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <%- include('partials/toast') %>
+  <script type="module" src="/js/events.js"></script>
+</body>
+</html>

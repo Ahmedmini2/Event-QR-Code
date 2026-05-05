@@ -1,0 +1,40 @@
+<%- include('partials/head', { pageTitle: 'Invitations Send' }) %>
+<body>
+  <div class="page">
+    <%- include('partials/topbar') %>
+    <main class="shell">
+      <header style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <span class="t-eyebrow">Invitations send</span>
+          <hr class="rule gold" />
+          <h1 class="t-headline">Ticket ledger</h1>
+        </div>
+        <div style="display:flex;gap:.6rem;align-items:center;">
+          <% if (user && user.isAdmin) { %>
+            <label class="t-meta" for="scope" style="margin:0;">View</label>
+            <select id="scope" style="width:auto;">
+              <option value="all" selected>All invitations</option>
+              <option value="mine">My invitations</option>
+            </select>
+          <% } %>
+          <a class="btn" href="/app/invite">Create Invitation</a>
+        </div>
+      </header>
+
+      <div class="card" style="padding:0; overflow:hidden;">
+        <table class="ledger" id="ledger">
+          <thead>
+            <tr>
+              <th>Ticket</th><th>Client</th><th>Agent</th><th>Event</th><th>Date / time</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="empty" id="empty" hidden>No invitations to show.</div>
+      </div>
+    </main>
+  </div>
+  <%- include('partials/toast') %>
+  <script type="module" src="/js/invitations.js"></script>
+</body>
+</html>

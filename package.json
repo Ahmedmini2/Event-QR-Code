@@ -1,0 +1,21 @@
+{
+  "name": "allegiance-event-qr",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Allegiance event invitation, QR ticketing, and Salesforce-backed front-desk app.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "jsforce": "^3.5.2",
+    "pdfkit": "^0.15.2",
+    "qrcode": "^1.5.4"
+  }
+}

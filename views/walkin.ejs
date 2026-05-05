@@ -1,0 +1,42 @@
+<%- include('partials/head', { pageTitle: 'Walk-in registration' }) %>
+<body>
+  <div class="page">
+    <%- include('partials/topbar') %>
+    <main class="shell" style="max-width: 720px;">
+      <header>
+        <span class="t-eyebrow">Walk-in</span>
+        <hr class="rule gold" />
+        <h1 class="t-headline">Register a guest at the door</h1>
+        <p class="t-body">For guests who arrive without an invitation. They are recorded as <em>attended</em> immediately.</p>
+      </header>
+
+      <form id="walkin-form" class="card">
+        <div class="field">
+          <label>Guest name</label>
+          <input type="text" name="name" id="name" required />
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" name="email" id="email" />
+        </div>
+        <div class="field">
+          <label>Event</label>
+          <select name="eventName" id="eventName" required>
+            <option value="" disabled selected>Loading approved events…</option>
+          </select>
+          <div class="t-meta" id="no-events-hint" hidden style="margin-top:.5rem;">
+            No approved events yet. <% if (user && user.isAdmin) { %><a href="/app/events">Add one in the Events tab</a>.<% } else { %>Ask your administrator to add one in the Events tab.<% } %>
+          </div>
+        </div>
+        <div class="field">
+          <label>Notes</label>
+          <textarea name="notes" id="notes"></textarea>
+        </div>
+        <button class="btn" type="submit">Register walk-in</button>
+      </form>
+    </main>
+  </div>
+  <%- include('partials/toast') %>
+  <script type="module" src="/js/walkin.js"></script>
+</body>
+</html>

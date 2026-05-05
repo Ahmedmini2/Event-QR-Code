@@ -1,0 +1,66 @@
+<%- include('partials/head', { pageTitle: 'Create Invitation' }) %>
+<body>
+  <div class="page">
+    <%- include('partials/topbar') %>
+    <main class="shell" style="max-width: 720px;">
+      <header>
+        <span class="t-eyebrow">Create invitation</span>
+        <hr class="rule gold" />
+        <h1 class="t-headline">Extend an introduction</h1>
+        <p class="t-body">Search your Salesforce leads, choose the client you would like to invite, then attach the event details. We will issue a ticket number and a QR code for the door.</p>
+      </header>
+
+      <form id="invite-form" class="card">
+        <div class="field">
+          <label>Client lookup</label>
+          <div class="combobox">
+            <input type="search" id="lead-search" placeholder="Begin typing a name, email, phone, or company…" autocomplete="off" />
+            <div class="results" id="lead-results" hidden></div>
+            <div class="selected" id="selected-lead" hidden>
+              <div>
+                <div class="t-mono" id="sel-name"></div>
+                <div class="t-meta" id="sel-meta"></div>
+              </div>
+              <button type="button" id="clear-lead">Change</button>
+            </div>
+            <input type="hidden" name="leadId" id="leadId" />
+          </div>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="field">
+            <label>Assigned agent</label>
+            <input type="text" value="<%= user && user.name ? user.name : '' %>" disabled />
+          </div>
+          <div class="field">
+            <label>Event date &amp; time</label>
+            <input type="datetime-local" name="eventAt" id="eventAt" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Event</label>
+          <select name="eventName" id="eventName" required>
+            <option value="" disabled selected>Loading approved events…</option>
+          </select>
+          <div class="t-meta" id="no-events-hint" hidden style="margin-top:.5rem;">
+            No approved events yet. <% if (user && user.isAdmin) { %><a href="/app/events">Add one in the Events tab</a>.<% } else { %>Ask your administrator to add one in the Events tab.<% } %>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Notes</label>
+          <textarea name="notes" id="notes" placeholder="Anything the front desk should know."></textarea>
+        </div>
+
+        <div style="display:flex; gap:.8rem;">
+          <button class="btn" type="submit">Create invitation</button>
+          <a class="btn secondary" href="/app">Cancel</a>
+        </div>
+      </form>
+    </main>
+  </div>
+  <%- include('partials/toast') %>
+  <script type="module" src="/js/invite.js"></script>
+</body>
+</html>

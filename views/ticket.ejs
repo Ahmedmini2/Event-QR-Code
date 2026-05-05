@@ -1,0 +1,43 @@
+<%- include('partials/head', { pageTitle: 'Ticket ' + ticket }) %>
+<body>
+  <div class="page">
+    <%- include('partials/topbar') %>
+    <main class="shell" style="max-width: 980px;">
+      <header>
+        <span class="t-eyebrow">Ticket</span>
+        <hr class="rule gold" />
+        <h1 class="t-headline t-mono"><%= ticket %></h1>
+      </header>
+
+      <section class="card ticket-card" id="ticket-detail">
+        <div>
+          <div class="t-eyebrow" id="status-eyebrow">Loading…</div>
+          <hr class="rule gold" />
+          <div class="t-subhead" id="lead-name">—</div>
+          <div class="t-meta" id="lead-meta"></div>
+          <hr class="rule" />
+          <div class="t-meta">Event</div>
+          <div class="t-subhead" id="event-name">—</div>
+          <div class="t-meta" id="event-when"></div>
+          <hr class="rule" />
+          <div class="t-meta">Assigned agent</div>
+          <div id="agent-name">—</div>
+          <hr class="rule" />
+          <div class="t-meta">Notes</div>
+          <div id="notes" class="t-body" style="white-space: pre-wrap;"></div>
+          <div style="margin-top:1.4rem; display:flex; gap:.6rem;">
+            <a class="btn secondary" href="/app/invitations">Back to ledger</a>
+            <button class="btn" id="print-btn" type="button">Download PDF ticket</button>
+          </div>
+        </div>
+        <div class="qr">
+          <img id="qr-img" alt="QR code" />
+        </div>
+      </section>
+    </main>
+  </div>
+  <%- include('partials/toast') %>
+  <script>window.__TICKET__ = <%- JSON.stringify(ticket) %>;</script>
+  <script type="module" src="/js/ticket.js"></script>
+</body>
+</html>

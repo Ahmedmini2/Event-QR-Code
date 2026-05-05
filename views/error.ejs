@@ -1,0 +1,14 @@
+<%- include('partials/head', { pageTitle: title }) %>
+<body>
+  <div class="page">
+    <% if (typeof user !== 'undefined' && user) { %><%- include('partials/topbar') %><% } %>
+    <main class="shell">
+      <span class="t-eyebrow">Notice</span>
+      <hr class="rule gold" />
+      <h1 class="t-headline"><%= title %></h1>
+      <p class="t-body"><%= message %></p>
+      <p style="margin-top:1.6rem;"><a class="btn secondary" href="/">Return home</a></p>
+    </main>
+  </div>
+</body>
+</html>

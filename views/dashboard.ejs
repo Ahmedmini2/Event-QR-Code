@@ -1,0 +1,55 @@
+<%- include('partials/head', { pageTitle: 'Overview' }) %>
+<body>
+  <div class="page">
+    <%- include('partials/topbar') %>
+    <main class="shell">
+      <header>
+        <span class="t-eyebrow">Overview</span>
+        <hr class="rule gold" />
+        <h1 class="t-headline">Today at the door</h1>
+        <p class="t-body" style="max-width: 60ch;">
+          A summary of the invitations you have extended, who has arrived, and who has yet to be welcomed.
+        </p>
+      </header>
+
+      <section class="grid cols-4" id="stats">
+        <div class="card stat"><span class="t-eyebrow">Invitations</span><div class="figure" data-stat="invitations">—</div></div>
+        <div class="card stat"><span class="t-eyebrow">Attended</span><div class="figure gold" data-stat="attended">—</div></div>
+        <div class="card stat"><span class="t-eyebrow">Pending</span><div class="figure" data-stat="pending">—</div></div>
+        <div class="card stat"><span class="t-eyebrow">Absent</span><div class="figure muted" data-stat="absent">—</div></div>
+      </section>
+
+      <section class="grid cols-2" style="margin-top: 1.4rem;">
+        <div class="card stat"><span class="t-eyebrow">Walk-ins</span><div class="figure" data-stat="walkIns">—</div></div>
+        <div class="card">
+          <span class="t-eyebrow">Quick actions</span>
+          <hr class="rule gold" />
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-top:.4rem;">
+            <a href="/app/invite" class="btn">New invitation</a>
+            <a href="/app/scan" class="btn secondary">Front-desk scan</a>
+            <a href="/app/walkin" class="btn secondary">Walk-in</a>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top: 2.4rem;">
+        <span class="t-eyebrow">Recent invitations</span>
+        <hr class="rule gold" />
+        <div class="card" style="padding:0; overflow:hidden;">
+          <table class="ledger" id="recent-table">
+            <thead>
+              <tr>
+                <th>Ticket</th><th>Client</th><th>Agent</th><th>Event</th><th>Date / time</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="empty" id="empty" hidden>No invitations yet. Create your first one to begin.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <%- include('partials/toast') %>
+  <script type="module" src="/js/dashboard.js"></script>
+</body>
+</html>

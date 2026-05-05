@@ -1,0 +1,48 @@
+<%- include('partials/head', { pageTitle: 'Front desk' }) %>
+<body>
+  <div class="page">
+    <%- include('partials/topbar') %>
+    <main class="shell" style="max-width: 920px;">
+      <header>
+        <span class="t-eyebrow">Front desk</span>
+        <hr class="rule gold" />
+        <h1 class="t-headline">Welcome an arriving client</h1>
+        <p class="t-body">Enter a ticket number, or open the camera to scan the QR code on the client's invitation.</p>
+      </header>
+
+      <div class="grid cols-2">
+        <div class="card">
+          <span class="t-eyebrow">By ticket number</span>
+          <hr class="rule gold" />
+          <form id="ticket-form">
+            <div class="field">
+              <label>Ticket</label>
+              <input type="text" id="ticket-input" placeholder="ALG-20260505-0001" autocomplete="off" required />
+            </div>
+            <button class="btn" type="submit">Look up &amp; mark attended</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <span class="t-eyebrow">By camera scan</span>
+          <hr class="rule gold" />
+          <div id="scanner"></div>
+          <div style="margin-top:.9rem; display:flex; gap:.6rem;">
+            <button class="btn secondary" id="start-scan" type="button">Start camera</button>
+            <button class="btn secondary" id="stop-scan" type="button" hidden>Stop</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="card" id="result" hidden style="margin-top:1.4rem;">
+        <span class="t-eyebrow">Ticket</span>
+        <hr class="rule gold" />
+        <div id="result-body"></div>
+      </section>
+    </main>
+  </div>
+  <%- include('partials/toast') %>
+  <script src="https://unpkg.com/html5-qrcode@2.3.10/html5-qrcode.min.js"></script>
+  <script type="module" src="/js/scan.js"></script>
+</body>
+</html>
