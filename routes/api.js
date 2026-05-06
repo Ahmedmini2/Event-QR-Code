@@ -21,8 +21,6 @@ import {
   updateEvent,
   findActiveEventByName,
 } from '../lib/store.js';
-import { writeTicketPdf } from '../lib/pdfTicket.js';
-
 const router = Router();
 
 router.use((req, res, next) => {
@@ -145,22 +143,6 @@ router.get('/invitations/:ticket/qr.png', async (req, res) => {
     color: { dark: '#06342C', light: '#FBF8F2' },
   });
   res.type('image/png').send(png);
-});
-
-router.get('/invitations/:ticket/ticket.pdf', async (req, res) => {
-  const inv = await findByTicket(req.params.ticket);
-  if (!inv) return res.status(404).send('Not found');
-  if (!req.session.sf.isAdmin && inv.ownerId !== req.session.sf.userId) {
-    return res.status(403).send('Forbidden');
-  }
-  res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `inline; filename="ticket-${inv.ticketNumber}.pdf"`);
-  try {
-    await writeTicketPdf(res, { ...inv, status: statusFor(inv) });
-  } catch (err) {
-    console.error('PDF generation failed:', err);
-    if (!res.headersSent) res.status(500).send('PDF generation failed');
-  }
 });
 
 router.post('/invitations/:ticket/scan', async (req, res) => {
