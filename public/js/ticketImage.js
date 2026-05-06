@@ -113,12 +113,6 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
   return yy + lineHeight;
 }
 
-function statusColor(status) {
-  if (status === 'Attended') return C.green;
-  if (status === 'Pending') return C.gold;
-  return C.grey;
-}
-
 async function drawBody(ctx, inv) {
   // Eyebrow
   ctx.fillStyle = C.gold;
@@ -192,15 +186,13 @@ async function drawBody(ctx, inv) {
   ctx.fillStyle = C.greyMid;
   ctx.font = '400 18px Inter, sans-serif';
   ctx.fillText(inv.ownerName || '—', leftX, y);
-  y += 36;
+  y += 50;
 
-  labelLine('STATUS', y);
-  y += 26;
-  ctx.fillStyle = statusColor(inv.status);
-  ctx.font = '600 16px Inter, sans-serif';
-  setLetterSpacing(ctx, 4);
-  ctx.fillText((inv.status || 'Pending').toUpperCase(), leftX, y);
-  setLetterSpacing(ctx, 0);
+  // Closing message — italic Playfair, gentle advisory tone
+  ctx.fillStyle = C.greyMid;
+  ctx.font = 'italic 500 22px "Playfair Display", Georgia, serif';
+  y = wrapText(ctx, 'We look forward to welcoming you at the event.', leftX, y, colW, 30);
+  const leftBottom = y;
 
   // Right column — QR with paper card behind it
   const qrSize = 340;
@@ -229,24 +221,36 @@ async function drawBody(ctx, inv) {
   ctx.fillText(inv.ticketNumber, rightX + colW / 2, qrY + qrSize + padFrame + 70);
   ctx.textAlign = 'left';
   setLetterSpacing(ctx, 0);
+
+  const rightBottom = qrY + qrSize + padFrame + 70 + 12;
+  return Math.max(leftBottom, rightBottom);
 }
 
 export async function generateTicketPng(invitation) {
   await (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve());
 
-  const canvas = document.createElement('canvas');
-  canvas.width = W;
-  canvas.height = H;
-  const ctx = canvas.getContext('2d');
+  const stage = document.createElement('canvas');
+  stage.width = W;
+  stage.height = H;
+  const ctx = stage.getContext('2d');
 
   ctx.fillStyle = C.ivory;
   ctx.fillRect(0, 0, W, H);
 
   drawHeader(ctx);
-  await drawBody(ctx, invitation);
+  const contentBottom = await drawBody(ctx, invitation);
+  const finalH = Math.min(H, Math.ceil(contentBottom + 60));
+
+  const finalCanvas = document.createElement('canvas');
+  finalCanvas.width = W;
+  finalCanvas.height = finalH;
+  const finalCtx = finalCanvas.getContext('2d');
+  finalCtx.fillStyle = C.ivory;
+  finalCtx.fillRect(0, 0, W, finalH);
+  finalCtx.drawImage(stage, 0, 0);
 
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
+    finalCanvas.toBlob((blob) => {
       if (!blob) return reject(new Error('PNG generation failed'));
       resolve(blob);
     }, 'image/png');

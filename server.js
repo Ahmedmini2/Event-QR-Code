@@ -6,6 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import authRoutes from './routes/auth.js';
 import apiRoutes from './routes/api.js';
+import { DATA_DIR } from './lib/store.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const FileStore = sessionFileStoreFactory(session);
-const sessionDir = path.join(__dirname, 'data', 'sessions');
+const sessionDir = path.join(DATA_DIR, 'sessions');
 const sessionStore = new FileStore({
   path: sessionDir,
   ttl: 8 * 60 * 60,
@@ -98,4 +99,5 @@ const PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 app.listen(PORT, HOST, () => {
   console.log(`Allegiance Event QR listening on ${HOST}:${PORT}`);
+  console.log(`Data directory: ${DATA_DIR}`);
 });
