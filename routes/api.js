@@ -156,7 +156,13 @@ router.post('/invitations/:ticket/scan', async (req, res) => {
   }
 
   const now = new Date().toISOString();
-  const updated = await updateInvitation(inv.ticketNumber, { scannedAt: now });
+  const scannerId = req.session.sf.userId;
+  const scannerName = req.session.sf.name;
+  const updated = await updateInvitation(inv.ticketNumber, {
+    scannedAt: now,
+    scannedBy: scannerId,
+    scannedByName: scannerName,
+  });
 
   let taskWarning = null;
   let statusWarning = null;
@@ -168,6 +174,7 @@ router.post('/invitations/:ticket/scan', async (req, res) => {
         ownerId: inv.ownerId,
         eventName: inv.eventName,
         ticketNumber: inv.ticketNumber,
+        scannedByName: scannerName,
       });
     } catch (err) {
       console.warn('Attendance task failed:', err.message);
@@ -209,6 +216,8 @@ router.post('/walkins', async (req, res) => {
     notes: notes || '',
     createdAt: now,
     scannedAt: now,
+    scannedBy: req.session.sf.userId,
+    scannedByName: req.session.sf.name,
   };
   await addInvitation(invitation);
   res.json({ invitation: { ...invitation, status: statusFor(invitation) } });

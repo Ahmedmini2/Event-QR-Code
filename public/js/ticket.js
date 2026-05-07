@@ -18,6 +18,11 @@ let currentInvitation = null;
     document.getElementById('event-name').textContent = invitation.eventName;
     document.getElementById('event-when').textContent = fmt.dateTime(invitation.eventAt);
     document.getElementById('agent-name').textContent = invitation.ownerName || '';
+    if (invitation.scannedAt) {
+      document.getElementById('scan-block').hidden = false;
+      document.getElementById('scanned-by').textContent = invitation.scannedByName || '—';
+      document.getElementById('scanned-at').textContent = 'at ' + fmt.dateTime(invitation.scannedAt);
+    }
     document.getElementById('notes').textContent = invitation.notes || '—';
   } catch (e) {
     toast(e.message, 'warn');

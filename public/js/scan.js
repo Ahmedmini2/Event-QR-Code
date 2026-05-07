@@ -34,8 +34,13 @@ function render(inv, extras = {}) {
         <div class="t-meta">${fmt.dateTime(inv.eventAt)}</div>
       </div>
       <div>
-        <div class="t-meta">Agent</div>
+        <div class="t-meta">Inviting agent</div>
         <div>${escapeHtml(inv.ownerName || '')}</div>
+        ${inv.scannedByName ? `
+          <div class="t-meta" style="margin-top:.6rem;">Scanned by</div>
+          <div>${escapeHtml(inv.scannedByName)}</div>
+          <div class="t-meta">${fmt.dateTime(inv.scannedAt)}</div>
+        ` : ''}
       </div>
       <div>
         <div class="t-meta">Status</div>
@@ -43,6 +48,11 @@ function render(inv, extras = {}) {
         ${extras.alreadyScanned ? '<div class="t-meta" style="margin-top:.4rem;">Already checked in earlier.</div>' : ''}
       </div>
     </div>
+    ${inv.notes ? `
+      <hr class="rule" />
+      <div class="t-meta">Notes</div>
+      <div class="t-body" style="white-space: pre-wrap;">${escapeHtml(inv.notes)}</div>
+    ` : ''}
   `;
 }
 
