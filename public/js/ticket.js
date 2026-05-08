@@ -14,7 +14,8 @@ let currentInvitation = null;
     document.getElementById('status-eyebrow').innerHTML =
       `<span class="${fmt.pillClass(invitation.status)}">${escapeHtml(invitation.status)}</span>`;
     document.getElementById('lead-name').textContent = invitation.leadName;
-    document.getElementById('lead-meta').textContent = invitation.leadEmail || '';
+    document.getElementById('lead-meta').textContent =
+      [invitation.leadEmail, invitation.leadPhone].filter(Boolean).join(' · ');
     document.getElementById('event-name').textContent = invitation.eventName;
     document.getElementById('event-when').textContent = fmt.dateTime(invitation.eventAt);
     document.getElementById('agent-name').textContent = invitation.ownerName || '';

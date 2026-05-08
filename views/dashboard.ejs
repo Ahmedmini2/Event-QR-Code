@@ -35,7 +35,45 @@
       <section style="margin-top: 2.4rem;">
         <span class="t-eyebrow">Recent invitations</span>
         <hr class="rule gold" />
-        <div class="card table-wrap" style="padding:0;">
+
+        <div class="card" style="padding: 1rem 1.2rem;">
+          <div class="filter-bar">
+            <div class="field">
+              <label for="d-search">Search</label>
+              <input type="search" id="d-search" placeholder="Ticket, client, email…" />
+            </div>
+            <div class="field">
+              <label for="d-agent">Agent</label>
+              <select id="d-agent"><option value="">All agents</option></select>
+            </div>
+            <div class="field">
+              <label for="d-event">Event</label>
+              <select id="d-event"><option value="">All events</option></select>
+            </div>
+            <div class="field">
+              <label for="d-status">Status</label>
+              <select id="d-status">
+                <option value="">All statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Attended">Attended</option>
+                <option value="Absent">Absent</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="d-from">From</label>
+              <input type="date" id="d-from" />
+            </div>
+            <div class="field">
+              <label for="d-to">To</label>
+              <input type="date" id="d-to" />
+            </div>
+            <div class="field actions">
+              <button type="button" class="btn secondary" id="d-reset">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card table-wrap" style="padding:0; margin-top: 1rem;">
           <table class="ledger" id="recent-table">
             <thead>
               <tr>
@@ -44,7 +82,10 @@
             </thead>
             <tbody></tbody>
           </table>
-          <div class="empty" id="empty" hidden>No invitations yet. Create your first one to begin.</div>
+          <div class="empty" id="empty" hidden>No invitations match your filters.</div>
+          <div class="pager">
+            <div class="summary" id="d-summary">—</div>
+          </div>
         </div>
       </section>
     </main>

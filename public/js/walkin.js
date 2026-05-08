@@ -6,15 +6,21 @@ document.getElementById('walkin-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
   const eventName = document.getElementById('eventName').value.trim();
   const notes = document.getElementById('notes').value.trim();
-  if (!name || !eventName) { toast('Name and event are required.', 'warn'); return; }
+  if (!name || !phone || !eventName) {
+    toast('Name, phone, and event are required.', 'warn');
+    return;
+  }
 
   try {
-    const { invitation } = await api('/api/walkins', {
+    const { invitation, warnings } = await api('/api/walkins', {
       method: 'POST',
-      body: { name, email, eventName, notes },
+      body: { name, email, phone, eventName, notes },
     });
+    if (warnings?.lead) toast('Salesforce lead: ' + warnings.lead, 'warn');
+    if (warnings?.campaign) toast('Campaign: ' + warnings.campaign, 'warn');
     window.location.href = '/app/ticket/' + encodeURIComponent(invitation.ticketNumber);
   } catch (err) {
     toast(err.message, 'warn');

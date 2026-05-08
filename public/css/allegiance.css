@@ -572,3 +572,52 @@ table.ledger tbody tr:hover { background: rgba(193, 167, 119, 0.06); }
   padding: 2.4rem 1.6rem; text-align: center; color: var(--grey-500);
   border: 1px dashed var(--hairline-strong); border-radius: var(--r-md);
 }
+
+/* Filter bar */
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+.filter-bar .field { margin: 0; }
+.filter-bar .field label {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+}
+.filter-bar input, .filter-bar select {
+  padding: 0.55rem 0.7rem;
+  font-size: 0.9rem;
+}
+.filter-bar .actions {
+  display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;
+}
+.filter-bar .actions .btn { padding: 0.55rem 0.9rem; font-size: 0.74rem; letter-spacing: 0.12em; }
+
+/* Pagination footer */
+.pager {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--hairline);
+  flex-wrap: wrap; gap: 0.6rem;
+}
+.pager .summary { color: var(--grey-500); font-size: 0.82rem; }
+.pager .controls { display: flex; gap: 0.4rem; align-items: center; }
+.pager button {
+  background: transparent;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-sm);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-900);
+  cursor: pointer;
+}
+.pager button:hover:not(:disabled) { background: rgba(193, 167, 119, 0.10); border-color: var(--gold-500); }
+.pager button:disabled { opacity: 0.4; cursor: not-allowed; }
+.pager .page-size {
+  display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--grey-500);
+}
+.pager .page-size select { padding: 0.3rem 0.5rem; font-size: 0.85rem; width: auto; }

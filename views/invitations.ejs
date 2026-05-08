@@ -9,7 +9,7 @@
           <hr class="rule gold" />
           <h1 class="t-headline">Ticket ledger</h1>
         </div>
-        <div style="display:flex;gap:.6rem;align-items:center;">
+        <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
           <% if (user && user.isAdmin) { %>
             <label class="t-meta" for="scope" style="margin:0;">View</label>
             <select id="scope" style="width:auto;">
@@ -17,11 +17,57 @@
               <option value="mine">My invitations</option>
             </select>
           <% } %>
+          <button class="btn secondary" id="export-btn" type="button">Export CSV</button>
           <a class="btn" href="/app/invite">Create Invitation</a>
         </div>
       </header>
 
-      <div class="card table-wrap" style="padding:0;">
+      <div class="card" style="padding: 1rem 1.2rem;">
+        <div class="filter-bar">
+          <div class="field">
+            <label for="f-search">Search</label>
+            <input type="search" id="f-search" placeholder="Ticket, client, email…" />
+          </div>
+          <div class="field">
+            <label for="f-agent">Agent</label>
+            <select id="f-agent"><option value="">All agents</option></select>
+          </div>
+          <div class="field">
+            <label for="f-event">Event</label>
+            <select id="f-event"><option value="">All events</option></select>
+          </div>
+          <div class="field">
+            <label for="f-status">Status</label>
+            <select id="f-status">
+              <option value="">All statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Attended">Attended</option>
+              <option value="Absent">Absent</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-type">Type</label>
+            <select id="f-type">
+              <option value="">All types</option>
+              <option value="invitation">Invitation</option>
+              <option value="walk-in">Walk-in</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-from">From</label>
+            <input type="date" id="f-from" />
+          </div>
+          <div class="field">
+            <label for="f-to">To</label>
+            <input type="date" id="f-to" />
+          </div>
+          <div class="field actions">
+            <button type="button" class="btn secondary" id="reset-filters">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card table-wrap" style="padding:0; margin-top: 1rem;">
         <table class="ledger" id="ledger">
           <thead>
             <tr>
@@ -30,7 +76,24 @@
           </thead>
           <tbody></tbody>
         </table>
-        <div class="empty" id="empty" hidden>No invitations to show.</div>
+        <div class="empty" id="empty" hidden>No invitations match your filters.</div>
+        <div class="pager" id="pager">
+          <div class="summary" id="pager-summary">—</div>
+          <div class="controls">
+            <span class="page-size">
+              Show
+              <select id="page-size">
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="all">All</option>
+              </select>
+            </span>
+            <button type="button" id="prev-page">Prev</button>
+            <span class="t-meta" id="page-indicator">Page 1</span>
+            <button type="button" id="next-page">Next</button>
+          </div>
+        </div>
       </div>
     </main>
   </div>

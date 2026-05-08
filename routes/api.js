@@ -2,12 +2,13 @@ import { Router } from 'express';
 import QRCode from 'qrcode';
 import {
   connectionFromSession,
-  searchOwnedLeads,
+  searchLeads,
   getLead,
   createInvitationTask,
   createAttendanceTask,
   markLeadInvited,
   markLeadAttended,
+  createWalkinLead,
 } from '../lib/salesforce.js';
 import {
   nextTicketNumber,
@@ -43,8 +44,9 @@ router.get('/leads/search', async (req, res) => {
   if (q.length < 2) return res.json({ results: [] });
   try {
     const conn = connectionFromSession(req.session);
-    const ownerId = req.session.sf.userId;
-    const results = await searchOwnedLeads(conn, ownerId, q);
+    const sf = req.session.sf;
+    const ownerId = sf.isAdmin ? null : sf.userId;
+    const results = await searchLeads(conn, q, { ownerId });
     res.json({ results });
   } catch (err) {
     console.error('Lead search failed:', err);
@@ -195,20 +197,43 @@ router.post('/invitations/:ticket/scan', async (req, res) => {
 });
 
 router.post('/walkins', async (req, res) => {
-  const { name, email, eventName, notes } = req.body || {};
-  if (!name || !eventName) return res.status(400).json({ error: 'Missing name or eventName' });
+  const { name, email, phone, eventName, notes } = req.body || {};
+  if (!name || !eventName || !phone) {
+    return res.status(400).json({ error: 'Name, phone, and event are required.' });
+  }
   const eventEntry = await findActiveEventByName(eventName);
   if (!eventEntry) {
     return res.status(400).json({ error: 'That event is not in the approved list. Ask an administrator to add it under Events.' });
   }
+
+  let leadId = null;
+  let leadWarning = null;
+  let campaignWarning = null;
+  try {
+    const conn = connectionFromSession(req.session);
+    const result = await createWalkinLead(conn, {
+      fullName: name,
+      email,
+      phone,
+      eventName,
+      ownerId: req.session.sf.userId,
+    });
+    leadId = result.leadId;
+    campaignWarning = result.campaignWarning;
+  } catch (err) {
+    console.warn('Walk-in lead create failed:', err.message);
+    leadWarning = err.message;
+  }
+
   const ticketNumber = await nextTicketNumber();
   const now = new Date().toISOString();
   const invitation = {
     ticketNumber,
     type: 'walk-in',
-    leadId: null,
+    leadId,
     leadName: name,
     leadEmail: email || '',
+    leadPhone: phone,
     ownerId: req.session.sf.userId,
     ownerName: req.session.sf.name,
     eventName,
@@ -220,7 +245,10 @@ router.post('/walkins', async (req, res) => {
     scannedByName: req.session.sf.name,
   };
   await addInvitation(invitation);
-  res.json({ invitation: { ...invitation, status: statusFor(invitation) } });
+  res.json({
+    invitation: { ...invitation, status: statusFor(invitation) },
+    warnings: { lead: leadWarning, campaign: campaignWarning },
+  });
 });
 
 router.get('/dashboard/stats', async (req, res) => {
